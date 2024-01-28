@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Search Query</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        body{
+            background: linear-gradient(90deg, #e3ffe7 0%, #d9e7ff 100%);
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <h1 class="text-center display-1 lead">Survey Database</h1>
+    <form th:action="@{/surveyForm/db/search}" method="get" class="d-flex justify-content-center my-4">
+        <input type="search" id="search" name="keyword" th:value="${keyword}" placeholder="Search by name..." size=50/>
+        <button class="btn btn-info btn-sm p-2 mx-2" id="searchBtn" type="submit">Search</button>
+    </form>
+    <div th:if="${surveyList.size() > 0}">
+        <table class="table table-striped table-bordered mt-2">
+            <thead class="table-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Age</th>
+                    <th>Current Role</th>
+                    <th>Recommendation</th>
+                    <th>Favourite Feature</th>
+                    <th>Feedback</th>
+                    <th>Additional Comments</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                <tr th:each="srv:${surveyList}">
+                    <td th:text="${srv.name}"></td>
+                    <td th:text="${srv.email}"></td>
+                    <td th:text="${srv.age}"></td>
+                    <td th:text="${srv.currentRole.value}"></td>
+                    <td th:text="${srv.recommendation.value}"></td>
+                    <td th:text="${srv.favFeature.value}"></td>
+                    <td>
+                        <ul>
+                            <li th:each="f:${srv.feedback}" th:text="${f.value}"></li>
+                        </ul>
+                    </td>
+                    <td th:text="${srv.comment}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div th:unless="${surveyList.size() > 0}">
+        <span>No such Survey entries found</span>
+    </div>
+</div>
+</body>
+</html>
